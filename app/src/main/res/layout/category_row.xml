@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="128dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/categoryNameTextView_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".8"
+        android:fontFamily="sans-serif-black"
+        android:gravity="bottom|center"
+        android:text="Games for School"
+        android:textColor="#000000"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/categoryCountTextView_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".5"
+        android:gravity="center|top"
+        android:text="22 Games"
+        android:textColor="#555555" />
+
+    <View
+        android:id="@+id/categorySeparator_id"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_weight="0"
+        android:background="#F44336" />
+</LinearLayout>
