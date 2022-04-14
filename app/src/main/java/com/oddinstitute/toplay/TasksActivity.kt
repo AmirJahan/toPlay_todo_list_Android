@@ -3,14 +3,11 @@ package com.oddinstitute.toplay
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.RecoverySystem
-import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.oddinstitute.toplay.model.Category
 import com.oddinstitute.toplay.model.Task
 
 class TasksActivity : AppCompatActivity(),
@@ -18,26 +15,12 @@ class TasksActivity : AppCompatActivity(),
 {
     override fun rowClicked(index: Int)
     {
-        thisCategory.tasks[index].isDone = !thisCategory.tasks[index].isDone
+        //        thisCategory.tasks[index].isDone = !thisCategory.tasks[index].isDone
 
-        if (thisCategory.tasks[index].isDone) // now it is done
-        {
-            val thisTask = thisCategory.tasks[index]
-            thisCategory.tasks.removeAt(index)
+        AppData.categories[catIndex].tasks[index].isDone =
+            !AppData.categories[catIndex].tasks[index].isDone
 
-            tasksAdapter.notifyItemRemoved(index)
-
-            thisCategory.tasks.add(thisTask)
-            tasksAdapter.notifyItemMoved(index,
-                                         thisCategory.tasks.size - 1)
-
-        }
-        else
-        {
-
-        }
-
-        thisCategory
+        tasksAdapter.notifyItemChanged(index)
 
 
 
@@ -45,9 +28,9 @@ class TasksActivity : AppCompatActivity(),
 
     override fun rowLongClicked(index: Int)
     {
-       // delete the row and the task
+        // delete the row and the task
 
-        thisCategory.tasks.removeAt(index)
+        AppData.categories[catIndex].tasks.removeAt(index)
         tasksAdapter.notifyItemRemoved(index)
 
 
@@ -55,27 +38,26 @@ class TasksActivity : AppCompatActivity(),
 
 
     lateinit var tasksRecyclerView: RecyclerView
-    lateinit var thisCategory: Category
+    // lateinit var thisCategory: Category
 
     lateinit var tasksAdapter: TasksAdapter
 
 
-
+    var catIndex = 0
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tasks)
 
 
-        val index = intent.getIntExtra("categoryIndex", 0)
-        thisCategory = AppData.categories[index]
+        catIndex = intent.getIntExtra("categoryIndex", 0)
+        // thisCategory = AppData.categories[index]
 
         tasksRecyclerView = findViewById(R.id.tasksRecyclerView_id)
         tasksRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        tasksAdapter = TasksAdapter(index, this)
+        tasksAdapter = TasksAdapter(catIndex, this)
         tasksRecyclerView.adapter = tasksAdapter
-
 
 
         val nameEditText = findViewById<EditText>(R.id.newTaskEditText_id)
@@ -88,9 +70,9 @@ class TasksActivity : AppCompatActivity(),
                 if (event.action == KeyEvent.ACTION_UP)
                 {
                     val task = Task(nameEditText.text.toString())
-                    thisCategory.tasks.add(task)
+                    AppData.categories[catIndex].tasks.add(task)
 
-                    tasksAdapter.notifyItemInserted(thisCategory.tasks.count())
+                    tasksAdapter.notifyItemInserted(AppData.categories[catIndex].tasks.count())
 
                     nameEditText.text.clear()
 
@@ -99,10 +81,6 @@ class TasksActivity : AppCompatActivity(),
                             as InputMethodManager
 
                     inputManager.hideSoftInputFromWindow(view.windowToken, 0)
-
-
-
-
 
 
                 }
